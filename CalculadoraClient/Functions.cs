@@ -1,17 +1,13 @@
-﻿using CalculadoraClient.Models;
+﻿using System;
+
+
 using RestSharp;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using CalculadoraClient.Models;
 
 namespace CalculadoraClient.Functions
 {
 	public class Functions
 	{
-
-
 		public static int ReadInt(string text)
 		{
 			bool exit = false;
@@ -44,13 +40,13 @@ namespace CalculadoraClient.Functions
 			int[] array;
 			do
 			{
-				many = ReadInt("Lenght");
-			} while (many < 1);
-			array = new int[many];
-			for (int i = 0; i < array.Length; i++)
-			{
-				array[i] = ReadInt("numero");
-			}
+					many = ReadInt("Lenght");
+				} while (many < 1);
+				array = new int[many];
+				for (int i = 0; i < array.Length; i++)
+				{
+					array[i] = ReadInt("numero");
+				}
 			return array;
 		}
 
@@ -102,7 +98,6 @@ namespace CalculadoraClient.Functions
 			QueryRequest query = new QueryRequest();
 			Console.WriteLine("Id to search");
 			query.Id = Console.ReadLine();
-
 			var client = new RestClient("http://localhost:63115/api/Calculator/");
 			var request = new RestRequest("query", Method.POST);
 			request.AddJsonBody(query);
