@@ -1,0 +1,6 @@
+2020-10-05 10:59:10.3106|TRACE|CalculadoraServer.Controllers.CalculatorController|this is the service -> Add
+2020-10-05 10:59:10.3616|INFO|CalculadoraServer.Controllers.CalculatorController|OK
+2020-10-05 10:59:10.3616|INFO|CalculadoraServer.Controllers.CalculatorController|OK
+2020-10-05 11:08:04.1716|TRACE|CalculadoraServer.Controllers.CalculatorController|this is the service -> Add
+2020-10-05 11:08:04.2196|INFO|CalculadoraServer.Controllers.CalculatorController|OK
+2020-10-05 11:08:04.2196|INFO|CalculadoraServer.Controllers.CalculatorController|OK
