@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Net;
-using System.Web.Http;
-using CalculadoraServer.Models;
-using System;
-using NLog;
-using System.Net.Http;
-using System.Web;
 using System.Linq;
+using System.Web.Http;
+using System.Collections.Generic;
+
+using CalculadoraServer.Models;
+
+using NLog;
 
 namespace CalculadoraServer.Controllers
 {
@@ -29,44 +29,48 @@ namespace CalculadoraServer.Controllers
 			{
 				log.Error(HttpStatusCode.BadRequest);
 				throw new ArgumentNullException();
-			}else {
-			try {
+			}
+			else
+			{
+				try
+				{
 					
-					foreach (int num in values.Addens)
+						foreach (int num in values.Addens)
+							{
+								operation += num;
+							}
+						if (id != null || id == "")
 						{
-							operation += num;
-						}
-					if (id != null || id == "")
-					{
-						if (!journals.ContainsKey(id))
-						{
-							List<Operatione> Ops = new List<Operatione>();
-							Operatione op = new Operatione();
-							op.Operation = "add";
-							op.Calculation = string.Join("+", values.Addens) + " = " + operation;
-							op.Date = DateTime.Now.ToString("u");
-							Ops.Add(op);
-							journals[id] = Ops;
+							if (!journals.ContainsKey(id))
+							{
+								List<Operatione> Ops = new List<Operatione>();
+								Operatione op = new Operatione();
+								op.Operation = "add";
+								op.Calculation = string.Join("+", values.Addens) + " = " + operation;
+								op.Date = DateTime.Now.ToString("u");
+								Ops.Add(op);
+								journals[id] = Ops;
 
-						}else {
-							var Ops = journals[id];
-							Operatione op = new Operatione();
-							op.Operation = "add";
-							op.Calculation = string.Join("+", values.Addens) + " = " + operation;
-							op.Date = DateTime.Now.ToString("u");
-							Ops.Add(op);
-							journals[id] = Ops;
+							}else {
+								var Ops = journals[id];
+								Operatione op = new Operatione();
+								op.Operation = "add";
+								op.Calculation = string.Join("+", values.Addens) + " = " + operation;
+								op.Date = DateTime.Now.ToString("u");
+								Ops.Add(op);
+								journals[id] = Ops;
+							}
 						}
-					}
 
-					respond.Sum = operation;
-				log.Info(HttpStatusCode.OK);
-			}
-			catch(Exception e) {
-				log.Error(HttpStatusCode.InternalServerError);
-				log.Error("Error in the controller Add " + e);
-				throw new Exception();
-			}
+						respond.Sum = operation;
+					log.Info(HttpStatusCode.OK);
+				}
+				catch(Exception e) 
+				{
+					log.Error(HttpStatusCode.InternalServerError);
+					log.Error("Error in the controller Add " + e);
+					throw new Exception();
+				}
 			}
 			return respond;
 
@@ -86,8 +90,9 @@ namespace CalculadoraServer.Controllers
 			{
 				log.Error(HttpStatusCode.BadRequest);
 				throw new ArgumentNullException();
-			}else {
-
+			}
+			else 
+			{
 				try
 				{
 					respond.Difference = values.Minuend - values.Subtrahend;
@@ -150,20 +155,19 @@ namespace CalculadoraServer.Controllers
 				{
 					operation = operation * num;
 				}
-					if (id != null || id == "")
+				if (id != null || id == "")
+				{
+					if (!journals.ContainsKey(id))
 					{
-						if (!journals.ContainsKey(id))
-						{
-							List<Operatione> Ops = new List<Operatione>();
-							Operatione op = new Operatione();
-							op.Operation = "multiply";
-							op.Calculation = string.Join("*", values.Factors) + " = " + operation;
-							op.Date = DateTime.Now.ToString("u");
-							Ops.Add(op);
-							journals[id] = Ops;
-
-						}
-						else
+						List<Operatione> Ops = new List<Operatione>();
+						Operatione op = new Operatione();
+						op.Operation = "multiply";
+						op.Calculation = string.Join("*", values.Factors) + " = " + operation;
+						op.Date = DateTime.Now.ToString("u");
+						Ops.Add(op);
+						journals[id] = Ops;
+					}
+					else
 						{
 							var Ops = journals[id];
 							Operatione op = new Operatione();
@@ -174,7 +178,7 @@ namespace CalculadoraServer.Controllers
 							journals[id] = Ops;
 						}
 					}
-					respond.Product = operation;
+				respond.Product = operation;
 				log.Info(HttpStatusCode.OK);
 			}
 			catch (Exception e)
@@ -189,7 +193,8 @@ namespace CalculadoraServer.Controllers
 		}
 		[HttpPost]
 		[ActionName("div")]
-		public DivRespond DivPost(DivRequest values) {
+		public DivRespond DivPost(DivRequest values) 
+		{
 			log.Trace("this is the service -> div");
 			var hasTrackingHeader = Request.Headers.Contains("X-Evi-Tracking-Id");
 			var id = hasTrackingHeader ? Request.Headers.GetValues("X-Evi-Tracking-Id").FirstOrDefault() : "";
@@ -302,7 +307,8 @@ namespace CalculadoraServer.Controllers
 		[ActionName("query")]
 		public QueryRespond QueryPost(QueryRequest values) {
 			QueryRespond respond = new QueryRespond();
-			if(journals.ContainsKey(values.Id)) {
+			if(journals.ContainsKey(values.Id)) 
+			{
 				respond.Operations = journals[values.Id];
 			}
 			return respond;
